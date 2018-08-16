@@ -183,6 +183,22 @@ class HNATT():
 				'vocabularySize': self.VOCABULARY_SIZE
 			}
 			pickle.dump(tokenizer_state, open(path, "wb" ) )
+            
+	def test(self, test_x, test_y, 
+		batch_size=16, 
+		embedding_dim=100,
+		embeddings_path=False):
+		# fit tokenizer
+		#self._fit_on_texts(train_x)
+		self.model = self._build_model(
+			n_classes=test_y.shape[-1], 
+			embedding_dim=100,
+			embeddings_path=embeddings_path)
+		encoded_test_x = self._encode_texts(test_x)
+		return self.model.evaluate(x=encoded_test_x, y=test_y, 
+					   batch_size=batch_size,  
+					   verbose=1)
+        
 
 	def train(self, train_x, train_y, 
 		batch_size=16, epochs=1, 
