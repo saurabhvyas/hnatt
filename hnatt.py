@@ -204,10 +204,13 @@ class HNATT():
 		batch_size=16, epochs=1, 
 		embedding_dim=100,
 		embeddings_path=False, 
-		saved_model_dir='saved_models', saved_model_filename=None,):
+		saved_model_dir='saved_models', saved_model_filename=None,restore=True):
 		# fit tokenizer
 		self._fit_on_texts(train_x)
-		self.model = self._build_model(
+            
+        
+		if restore==False:
+			self.model = self._build_model(
 			n_classes=train_y.shape[-1], 
 			embedding_dim=100,
 			embeddings_path=embeddings_path)
@@ -218,12 +221,12 @@ class HNATT():
 			# 	patience=2,
 			# ),
 			ReduceLROnPlateau(),
-			# keras.callbacks.TensorBoard(
-			# 	log_dir="logs/final/{}".format(datetime.datetime.now()), 
-			# 	histogram_freq=1, 
-			# 	write_graph=True, 
-			# 	write_images=True
-			# )
+			 keras.callbacks.TensorBoard(
+			 	log_dir="logs/final/{}".format(datetime.datetime.now()), 
+			 	histogram_freq=1, 
+			 	write_graph=True, 
+			 	write_images=True
+			 ),
 			LambdaCallback(
 				on_epoch_end=lambda epoch, logs: self._save_tokenizer_on_epoch_end(
 					os.path.join(saved_model_dir, 
