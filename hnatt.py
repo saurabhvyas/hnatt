@@ -104,7 +104,7 @@ class HNATT():
 
 		# Generate sentence-attention-weighted document scores
 		texts_in = Input(shape=(self.MAX_SENTENCE_COUNT, self.MAX_SENTENCE_LENGTH), dtype='int32')
-		attention_weighted_sentences = TimeDistributed(attention_weighted_sentence)(texts_in)
+		attention_weighted_sentences=TimeDistributed(attention_weighted_sentence,name='time_distributed_2')(texts_in)
 		sentence_encoder = Bidirectional(
 			GRU(50, return_sequences=True, kernel_regularizer=l2_reg))(attention_weighted_sentences)
 		dense_transform_s = Dense(
@@ -128,7 +128,7 @@ class HNATT():
 	def load_weights(self, saved_model_dir, saved_model_filename):
 		with CustomObjectScope({'Attention': Attention}):
 			self.model = load_model(os.path.join(saved_model_dir, saved_model_filename))
-			self.word_attention_model = self.model.get_layer('time_distributed_1').layer
+			self.word_attention_model = self.model.get_layer('time_distributed_2').layer
 			tokenizer_path = os.path.join(
 				saved_model_dir, self._get_tokenizer_filename(saved_model_filename))
 			tokenizer_state = pickle.load(open(tokenizer_path, "rb" ))

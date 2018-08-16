@@ -45,6 +45,9 @@ def polarize(v):
 def load_data(path, size=1e4, train_ratio=0.8, binary=False):
 	print('loading Yelp reviews...')
 	df = pd.read_csv(path, nrows=size, usecols=['stars', 'text'])
+	#df['text_tokens']=df['text'].astype('unicode').values
+	#print(df['text_tokens'].dtypes)
+    
 	df['text_tokens'] = df['text'].progress_apply(lambda x: normalize(x))
 	
 	dim = 5
@@ -56,7 +59,7 @@ def load_data(path, size=1e4, train_ratio=0.8, binary=False):
 		x, y = chunk_to_arrays(df, binary=binary)
 		return balance_classes(x, y, dim, train_ratio)
 
-	train_size = round(size * train_ratio)
+	train_size = int(round(size * train_ratio))
 	test_size = size - train_size;
 
 	# training + validation set
@@ -68,7 +71,8 @@ def load_data(path, size=1e4, train_ratio=0.8, binary=False):
 	# train_set.sort_values('len', inplace=True, ascending=True)
 	train_x, train_y = chunk_to_arrays(train_set, binary=binary)
 	train_y = to_one_hot(train_y, dim=dim)
-
+	print(train_x[0])
+	print(train_y[0])
 	test_set = df[train_size:]
 	test_x, test_y = chunk_to_arrays(test_set, binary=binary)
 	test_y = to_one_hot(test_y)

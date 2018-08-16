@@ -8,7 +8,9 @@ nlp.add_pipe(nlp.create_pipe('sentencizer'))
 
 def normalize(text):
 	text = text.lower().strip()
-	doc = nlp(text)
+    #print(type(text))
+    #print(text.decode('utf8')
+	doc = nlp(text.decode('utf-8'))
 	filtered_sentences = []
 	for sentence in doc.sents:
 		filtered_tokens = list()
