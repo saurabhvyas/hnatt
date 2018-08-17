@@ -190,10 +190,10 @@ class HNATT():
 		embeddings_path=False):
 		# fit tokenizer
 		#self._fit_on_texts(train_x)
-		self.model = self._build_model(
-			n_classes=test_y.shape[-1], 
-			embedding_dim=100,
-			embeddings_path=embeddings_path)
+		#self.model = self._build_model(
+			#n_classes=test_y.shape[-1], 
+			#embedding_dim=100,
+			#embeddings_path=embeddings_path)
 		encoded_test_x = self._encode_texts(test_x)
 		return self.model.evaluate(x=encoded_test_x, y=test_y, 
 					   batch_size=batch_size,  
@@ -206,10 +206,12 @@ class HNATT():
 		embeddings_path=False, 
 		saved_model_dir='saved_models', saved_model_filename=None,restore=True):
 		# fit tokenizer
-		self._fit_on_texts(train_x)
+
             
         
 		if restore==False:
+			print("training from scratch!")        
+			self._fit_on_texts(train_x)
 			self.model = self._build_model(
 			n_classes=train_y.shape[-1], 
 			embedding_dim=100,
