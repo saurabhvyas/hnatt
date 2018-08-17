@@ -261,6 +261,9 @@ class HNATT():
 
 	def predict(self, x):
 		encoded_x = self._encode_texts(x)
+		#encoded_x=np.asarray(self.tokenizer.texts_to_sequences(x))
+		#encoded_x_expanded=encoded_x[ np.newaxis , np.newaxis,...]
+		#print(encoded_x_expanded.shape)        
 		return self.model.predict(encoded_x)
 
 	def activation_maps(self, text, websafe=False):
