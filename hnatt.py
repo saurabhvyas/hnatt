@@ -200,7 +200,7 @@ class HNATT():
 					   verbose=1)
         
 
-	def train(self, train_x, train_y, 
+	def train(self, train_x, train_y,val_x,val_y, 
 		batch_size=16, epochs=1, 
 		embedding_dim=100,
 		embeddings_path=False, 
@@ -217,6 +217,8 @@ class HNATT():
 			embedding_dim=100,
 			embeddings_path=embeddings_path)
 		encoded_train_x = self._encode_texts(train_x)
+		encoded_val_x=self._encode_texts(val_x)
+        
 		callbacks = [
 			# EarlyStopping(
 			# 	monitor='acc',
@@ -249,7 +251,7 @@ class HNATT():
 					   epochs=epochs, 
 					   verbose=1, 
 					   callbacks=callbacks,
-					   validation_split=0.1,  
+					   validation_data=(encoded_val_x,val_y),  
 					   shuffle=True)
 
 	def _encode_input(self, x, log=False):
